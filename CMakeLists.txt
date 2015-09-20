@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "--std=c++0x")
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS moveit_core moveit_ros_planning moveit_ros_planning_interface pluginlib
-	ar_track_alvar rosbag)
+	ar_track_alvar rosbag geometry_msgs)
 
 ## System dependencies are found with CMake's conventions
 find_package(Boost REQUIRED system filesystem date_time thread)
@@ -113,6 +113,7 @@ catkin_package(
     interactive_markers
     ar_track_alvar
     rosbag
+    geometry_msgs
    DEPENDS
     Boost
     Eigen
