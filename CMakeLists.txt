@@ -105,8 +105,8 @@ find_package(Boost REQUIRED system filesystem date_time thread)
 # )
 
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES pr2_moveit_tutorials
+ INCLUDE_DIRS include
+ LIBRARIES bag_interface
   CATKIN_DEPENDS 
     moveit_core
     moveit_ros_planning_interface
@@ -126,26 +126,32 @@ find_package(Eigen REQUIRED)
 
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
-# include_directories(include)
 # include_directories(
 #   ${catkin_INCLUDE_DIRS}
 # )
+include_directories(include)
 include_directories(SYSTEM ${Boost_INCLUDE_DIR} ${EIGEN_INCLUDE_DIRS})
 include_directories(${catkin_INCLUDE_DIRS})
 link_directories(${catkin_LIBRARY_DIRS} ${Boost_LIBRARY_DIRS})
-## Declare a C++ library
-# add_library(kinect_demonstrate
-#   src/${PROJECT_NAME}/kinect_demonstrate.cpp
-# )
+
+# Declare a C++ library
+add_library(bag_interface
+  src/mybag.cpp
+  include/mybag.h
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(kinect_demonstrate ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+target_link_libraries(bag_interface
+  ${catkin_LIBRARIES}
+  ${Boost_LIBRARIES}
+)
+add_dependencies(bag_interface ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Declare a C++ executable
 add_executable(trajectory src/trajectory.cpp)
-add_executable(mybag src/mybag.cpp)
+# add_executable(mybag src/mybag.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
@@ -155,11 +161,12 @@ add_executable(mybag src/mybag.cpp)
 target_link_libraries(trajectory
   ${catkin_LIBRARIES}
   ${Boost_LIBRARIES}
+  bag_interface
 )
-target_link_libraries(mybag
-  ${catkin_LIBRARIES}
-  ${Boost_LIBRARIES}
-)
+# target_link_libraries(mybag
+#   ${catkin_LIBRARIES}
+#   ${Boost_LIBRARIES}
+# )
 
 #############
 ## Install ##

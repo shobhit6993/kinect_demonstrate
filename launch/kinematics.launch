@@ -1,19 +1,19 @@
 <launch>
   <!-- <include file="$(find pr2_moveit_config)/launch/planning_context.launch">
     <arg name="load_robot_description" value="true"/> -->
-    <!-- <include file="$(find pr2_moveit_config)/launch/demo.launch"> -->
-  <!-- </include> -->
+    <include file="$(find pr2_moveit_config)/launch/demo.launch">
+  </include>
 
-  <!-- <node name="trajectory"
+  <node name="trajectory"
         pkg="kinect_demonstrate"
         type="trajectory"
-        respawn="false" output="screen"> -->
-  <node name="mybag"
+        respawn="false" output="screen">
+  <!-- <node name="mybag"
         pkg="kinect_demonstrate"
         type="mybag"
-        respawn="false" output="screen">
-    <!-- <rosparam command="load"
-              file="$(find pr2_moveit_config)/config/kinematics.yaml"/> -->
+        respawn="false" output="screen"> -->
+    <rosparam command="load"
+              file="$(find pr2_moveit_config)/config/kinematics.yaml"/>
   </node>
 </launch>
 

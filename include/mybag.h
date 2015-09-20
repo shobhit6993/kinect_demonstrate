@@ -4,7 +4,8 @@
 #include "boost/foreach.hpp"
 #include "ar_track_alvar/AlvarMarkers.h"
 #include "ar_track_alvar/AlvarMarker.h"
-#include "geometry_msgs/PoseStamped.h"
+// #include "geometry_msgs/PoseStamped.h"
+#include "geometry_msgs/Pose.h"
 
 const std::string BAG_FILENAME = "/home/shobhit/ros-workspace/src/kinect_demonstrate/bag/ar_test.bag";
 const std::string TOPIC1 = "ar_pose_marker";
@@ -17,6 +18,6 @@ private:
     void setTopics();
 public:
     MyBag();
-    void getWayPoints(std::vector<geometry_msgs::PoseStamped> &);
+    void getWayPoints(std::vector<geometry_msgs::Pose> &);
     ~MyBag();
 };

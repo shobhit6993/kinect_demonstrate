@@ -17,7 +17,7 @@ MyBag::MyBag()
 // reads a bagfile recorded using ar_track_alvar package
 // extracts pose information from each message
 // fills the argument vector with waypoints for the robot's end-effector
-void MyBag::getWayPoints(std::vector<geometry_msgs::PoseStamped> &way_points)
+void MyBag::getWayPoints(std::vector<geometry_msgs::Pose> &way_points)
 {
     setTopics();
     rosbag::View view(bag, rosbag::TopicQuery(topics));
@@ -32,7 +32,8 @@ void MyBag::getWayPoints(std::vector<geometry_msgs::PoseStamped> &way_points)
         {
             if (i->markers.size() != 0)
             {
-                way_points.push_back(i->markers[0].pose);
+                //add geometry_msgs::Pose not geometry_msgs::PoseStamped
+                way_points.push_back(i->markers[0].pose.pose);  
             }
         }
     }
@@ -49,16 +50,17 @@ MyBag::~MyBag()
     bag.close();
 }
 
-int main(int argc, char const * argv[])
-{
-    MyBag mybag;
+// int main(int argc, char const * argv[])
+// {
+//     MyBag mybag;
 
-    std::vector<geometry_msgs::PoseStamped> way_points;
-    mybag.getWayPoints(way_points);
+//     std::vector<geometry_msgs::Pose> way_points;
+//     mybag.getWayPoints(way_points);
 
-    BOOST_FOREACH(geometry_msgs::PoseStamped const w, way_points)
-    {
-        std::cout << w << std::endl;
-    }
-    return 0;
-}
+//     // std::cout << "Size:" << way_points.size() << std::endl;
+//     BOOST_FOREACH(geometry_msgs::Pose const w, way_points)
+//     {
+//         std::cout << w << std::endl;
+//     }
+//     return 0;
+// }
