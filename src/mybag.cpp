@@ -33,7 +33,29 @@ void MyBag::getWayPoints(std::vector<geometry_msgs::Pose> &way_points)
             if (i->markers.size() != 0)
             {
                 //add geometry_msgs::Pose not geometry_msgs::PoseStamped
-                way_points.push_back(i->markers[0].pose.pose);  
+                way_points.push_back(i->markers[0].pose.pose);
+            }
+        }
+    }
+}
+
+void MyBag::getAlvarMarkers(std::vector<ar_track_alvar::AlvarMarker> &way_points)
+{
+    setTopics();
+    rosbag::View view(bag, rosbag::TopicQuery(topics));
+
+    // messages are of type ar_track_alvar::AlvarMarkers
+    // Header h
+    // AlvarMarker[] markers
+    BOOST_FOREACH(rosbag::MessageInstance const m, view)
+    {
+        ar_track_alvar::AlvarMarkers::ConstPtr i = m.instantiate<ar_track_alvar::AlvarMarkers>();
+        if (i != NULL)
+        {
+            if (i->markers.size() != 0)
+            {
+                //add geometry_msgs::PoseStamped not geometry_msgs::Pose
+                way_points.push_back(i->markers[0]);
             }
         }
     }
@@ -43,6 +65,32 @@ void MyBag::getWayPoints(std::vector<geometry_msgs::Pose> &way_points)
 void MyBag::setTopics()
 {
     topics.push_back(std::string(TOPIC1));
+}
+
+geometry_msgs::Pose MyBag::getStartPoint()
+{
+    setTopics();
+    rosbag::View view(bag, rosbag::TopicQuery(topics));
+
+    geometry_msgs::Pose start;
+
+    BOOST_FOREACH(rosbag::MessageInstance const m, view)
+    {
+        ar_track_alvar::AlvarMarkers::ConstPtr i = m.instantiate<ar_track_alvar::AlvarMarkers>();
+        if (i != NULL)
+        {
+            if (i->markers.size() != 0 && i->markers[0].id == START_MARKER_ID)
+            {
+                // first instance of the pose of start marker found. Return this as start position
+                std::cout << "Start Marker" << i->markers[0].id << std::endl;
+                std::cout << i->markers[0].pose.pose << std::endl;
+                start = i->markers[0].pose.pose;
+                break;
+            }
+        }
+    }
+    std::cout << "BYE" << std::endl;
+    return start;
 }
 
 MyBag::~MyBag()
